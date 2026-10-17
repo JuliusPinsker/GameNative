@@ -26,6 +26,22 @@
 
 </div>
 
+## GTA V on MediaTek + Mali-G1 (Xiaomi 17T Pro)
+
+This fork runs GTA V Legacy (Steam, Story Mode) on a phone that has none of the usual ingredients for PC games on Android: a MediaTek MT6993 (Dimensity 9500) instead of a Snapdragon, a Mali-G1-Ultra with Arm's proprietary Vulkan driver instead of Adreno with Turnip, no hardware BCn texture support, and an x86-64 game running through FEX inside arm64ec Proton. On a Xiaomi 17T Pro (Android 16, no root) it reaches 54.1 FPS in the built-in benchmark at 1280x720 and plays capped at 30 FPS at 1440x720.
+
+Branch `gta5-mali-g1` is upstream `master` plus four fixes that are also proposed upstream:
+
+- controller rumble re-armed from shared memory, so a missed stop no longer vibrates forever
+- `DXVK_CONFIG` written in the format DXVK parses, so the DX wrapper settings (memory budget, feature level, device id) take effect
+- Present `QueryCapabilities` answered, so `wrapper-gamenative` can create a swapchain
+- Allowed Orientations labelled by front camera side
+
+Plus one fork-only change: the release build is debuggable, so the patched Vulkan wrapper can be installed with `adb shell run-as`.
+
+Step-by-step guide from fresh install to Story Mode: [docs/GTA5_MALI_REPRODUCE.md](docs/GTA5_MALI_REPRODUCE.md).
+
+
 ---
 
 GameNative lets you run the PC games in your Steam, Epic and GOG libraries directly on Android — no streaming required. Your saves sync to the cloud, so you can stop on your PC and keep going on your phone.

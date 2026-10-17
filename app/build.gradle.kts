@@ -171,6 +171,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            isDebuggable = true // fork gta5-mali-g1: adb run-as installs the patched Vulkan wrapper
             signingConfig = signingConfigs.getByName("debug")
         }
         create("release-signed") {

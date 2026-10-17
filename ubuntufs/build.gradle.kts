@@ -28,6 +28,7 @@ android {
     }
 
     buildTypes {
+        getByName("release") { isDebuggable = true } // fork gta5-mali-g1: must match the base module
         create("release-signed") {
             initWith(getByName("release"))
         }
