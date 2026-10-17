@@ -22,6 +22,8 @@ Tested with GTA V Legacy (Steam), Story Mode only. GTA Online is out of scope (B
 - A Steam account that owns GTA V and the Rockstar account **linked to that Steam copy**.
 - About 135 GB free on the phone, `adb` on a PC, USB or wireless debugging.
 
+> **Fresh install only.** The release APK is meant for a device without GameNative or after uninstalling it. Installed over an existing, locally modified GameNative it (a) shows games on external storage as not installed, (b) re-extracts the containers (`needReextract`), and (c) migrates the app database to the newer format from upstream #2163 (`LaunchInfo.option`). An older build installed afterwards crashes in a loop with `JsonDecodingException: unknown key 'option'`. Back up the app data or uninstall the old build first. Observed on 17.10.2026.
+
 ## 1. Install the app
 
 1. HyperOS blocks `adb install` of new packages silently (`INSTALL_FAILED_USER_RESTRICTED`). Copy the APK to the phone and install it from the Files app.
@@ -90,7 +92,7 @@ Controller grips with a camera cutout fit one way only. Settings, Emulation, All
 
 ## Pitfalls
 
-- **Container `LD_PRELOAD` after a reinstall.** If you ever put `LD_PRELOAD` into the container env, it replaces GameNative's own preloads, so you had to copy absolute paths like `/data/app/~~<hash>/app.gamenative-<hash>/lib/arm64/libevshim.so`. Every APK install changes the hash and wine dies with `CANNOT LINK EXECUTABLE ... libevshim.so not found`. Remove `LD_PRELOAD` from the container env, or update the paths from `dumpsys package app.gamenative` (`legacyNativeLibraryDir`) with the app stopped.
+- **Container `LD_PRELOAD` after a reinstall.** If you ever put `LD_PRELOAD` into the container env, it replaces GameNative's own preloads, so you had to copy absolute paths like `/data/app/~~<hash>/app.gamenative-<hash>/lib/arm64/libevshim.so`. Every APK install changes the hash and wine dies with `CANNOT LINK EXECUTABLE ... libevshim.so not found`. Remove `LD_PRELOAD` from the container env, or update the paths from `dumpsys package app.gamenative` (`legacyNativeLibraryDir`) with the app stopped. Check the container environment after every APK update.
 - **VPN.** A VPN on the phone broke the Steam login of the game process (`cache/sb_host.log`: `SteamHost: not logged on`) while the app itself stayed logged in, and GTA asked for activation again. Exclude GameNative in the VPN's split tunnelling (Proton VPN: mode "Exclude").
 - **Container file.** The app rewrites `.container` from memory when a game ends. Edit it only with the app force-stopped, and keep `/` escaped as `\/`.
 - **settings.xml resets** to 800x600 / VSync half after every crash.

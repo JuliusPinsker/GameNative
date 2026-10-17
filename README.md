@@ -39,6 +39,8 @@ Branch `gta5-mali-g1` is upstream `master` plus four fixes that are also propose
 
 Plus one fork-only change: the release build is debuggable, so the patched Vulkan wrapper can be installed with `adb shell run-as`.
 
+> **Fresh install only.** The release APK is meant for a device without GameNative or after uninstalling it. Installed over an existing, locally modified GameNative it (a) shows games on external storage as not installed, (b) re-extracts the containers (`needReextract`), and (c) migrates the app database to the newer format from upstream #2163 (`LaunchInfo.option`). An older build installed afterwards crashes in a loop with `JsonDecodingException: unknown key 'option'`. Back up the app data or uninstall the old build first. Observed on 17.10.2026.
+
 Step-by-step guide from fresh install to Story Mode: [docs/GTA5_MALI_REPRODUCE.md](docs/GTA5_MALI_REPRODUCE.md).
 
 
